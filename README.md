@@ -1,6 +1,6 @@
-# Vereel MCP server
+# Vereel Influencer Marketing MCP server
 
-**Find influencers for your brand by talking to your AI assistant.**
+**Find verified influencers for your brand by talking to your AI assistant.**
 
 [Vereel](https://www.vereel.com) is an influencer-marketing marketplace: brands and companies publish *offers* (campaigns), and creators on Instagram, TikTok, YouTube and X apply to them.
 
