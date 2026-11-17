@@ -162,16 +162,40 @@ reviewer feedback appear in the portal. Escalations go to `mcp-review@anthropic.
 
 ## 2. The plugin bundle
 
-### Source step
+### Source step — the field that decides everything
+
+The plugin is **not** at the repository root. The root holds the npm package; the plugin is
+the [`plugin/`](../plugin/) folder. The portal's **Plugin path** field is marked optional,
+and leaving it empty means *the repository root*, which is not a plugin. That is what this
+blocking finding means:
+
+```
+This folder is not a plugin. If the plugin is in a subfolder, set the plugin path
+to that folder (for example plugins/my-plugin) and validate again. Otherwise add
+.claude-plugin/plugin.json with at least {"name": "…"}.
+```
+
+Nothing in the repository is wrong when that appears. Checked on `main` on 2026-11-17:
+`plugin/.claude-plugin/plugin.json` is there, 878 bytes, valid JSON, no BOM, `"name":
+"vereel"`, and every path it names resolves — `assets/icon.png` and five `skills/<name>/SKILL.md`.
+
+Fill the step in one of two ways:
 
 | Field | Value |
 |---|---|
 | Repository | `hans100x-dotcom/vereel-mcp` |
-| Plugin path | `plugin` |
+| Plugin path | `plugin` — **required here, no leading or trailing slash** |
 | Branch or tag | leave empty to follow `main` |
 
-The repository is already public, which publishing requires. One submission covers one
-plugin folder.
+Or paste the folder's own URL into **Repository** and let the portal fill the other two
+fields itself:
+
+```
+https://github.com/hans100x-dotcom/vereel-mcp/tree/main/plugin
+```
+
+A validation result applies to one commit: push to `main` after validating and you
+validate again.
 
 ### Validation
 
@@ -192,7 +216,31 @@ print `✔ Validation passed`, which is how the rest of the manifest was checked
 keys: the portal's **Validate** is the check that counts, and it is what reads them.
 
 That older CLI also does not check `.mcp.json`, which needs v2.1.281 or later, so the
-remote server entry has not been validated locally. The portal validates it.
+remote server entry has not been validated locally, and it does not accept `--strict`,
+which the documentation now asks for. The portal validates both, and runs more checks than
+the command does.
+
+### The steps after Source
+
+- **Listing details** — read from `plugin.json` and the README, not typed in. To change
+  anything there, edit the repository and validate again.
+- **Data handling** — four questions: whether the plugin reads or stores personal data,
+  whether it sends data anywhere other than its declared connectors, how long data is
+  kept, and whether it is intended for people under 18. For this plugin: it reads the
+  brand's or creator's own Vereel data through the declared connector only, sends nothing
+  anywhere else, keeps nothing of its own, and is not for under-18s.
+- **Compliance** — the contact email and four acknowledgements.
+- **Review and submit** — confirm, choose how new versions arrive (**GitHub push
+  webhook** is the default and needs repository admin access to set up), then **Submit for
+  review**. The **Auto-publish passing versions** toggle lives here.
+
+A passing version is **not live until it is published**: by default you select **Publish**
+and an Anthropic reviewer publishes it.
+
+Two portal limits worth knowing before clicking: an organization may create **10
+submissions per 24 hours**, drafts and withdrawn submissions included; and one submission
+per repository-and-folder pair, so continue the existing one from **Submissions** rather
+than starting a second.
 
 ### What the directory's checks should find
 
@@ -203,7 +251,7 @@ Deliberately avoided, because each one is a block or a reviewer hold:
   pinned-package hold applies.
 - **No lockfile and no `package.json`** in the plugin folder, which would otherwise be
   held as a dependency install. The npm package's own files stay at the repository root,
-  outside the plugin folder.
+  outside the plugin folder — which is also why the plugin path cannot be left empty.
 - **No hooks, no scripts, no `bin/`.** Nothing to follow, and nothing that stops the
   plugin from installing on claude.ai and Cowork.
 - **No credentials anywhere**, in the files or the examples, and no `userConfig`.
