@@ -288,13 +288,13 @@ its, at <https://www.vereel.com/en/privacy>.
 > their connected platforms. With no sign-in it reads only public campaign data, exactly
 > what an anonymous visitor of vereel.com sees, with no payment amounts. It writes a
 > campaign in review, photos on it, and the creator's portfolio draft, into that person's
-> own Vereel account. The plugin itself is five  files and one 
-> naming a single URL: no hooks, no scripts, no , no , no local state,
+> own Vereel account. The plugin itself is five `SKILL.md` files and one `.mcp.json`
+> naming a single URL: no hooks, no scripts, no `bin/`, no `userConfig`, no local state,
 > nothing it keeps.
 
 **Does it send data to services other than its declared connectors? No.**
 
-> One destination over HTTPS: , the declared connector.
+> One destination over HTTPS: `https://www.vereel.com/api/mcp`, the declared connector.
 > The plugin sends nothing anywhere else and carries no analytics or telemetry of its
 > own. Vereel the service processes that data with subprocessors under data processing
 > agreements — Supabase, Vercel, Stripe, Resend, Sentry, PostHog, Google, Cloudflare and
