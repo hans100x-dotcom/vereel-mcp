@@ -1,0 +1,26 @@
+{
+  "name": "vereel",
+  "displayName": "Vereel",
+  "version": "0.1.0",
+  "description": "Add influencer-marketing campaigns to Vereel and search the campaigns brands have already published, in plain language. The brand reviews and publishes every campaign itself in Vereel.",
+  "author": {
+    "name": "Vereel",
+    "url": "https://www.vereel.com"
+  },
+  "homepage": "https://www.vereel.com/en/api",
+  "repository": "https://github.com/hans100x-dotcom/vereel-mcp",
+  "license": "Apache-2.0",
+  "keywords": [
+    "influencer-marketing",
+    "creators",
+    "campaigns",
+    "instagram",
+    "tiktok",
+    "marketing"
+  ],
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://www.vereel.com/en/api",
+  "supportUrl": "https://www.vereel.com/en/contact",
+  "privacyPolicyUrl": "https://www.vereel.com/en/privacy",
+  "termsOfServiceUrl": "https://www.vereel.com/en/terms"
+}
