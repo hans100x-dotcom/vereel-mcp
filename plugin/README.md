@@ -93,6 +93,14 @@ The same tools are available as an open-source MCP server you run on your own co
 with an API token, instead of this hosted connection. See the repository root and
 <https://www.vereel.com/en/api>.
 
+## Who publishes this
+
+Vereel, the company that runs [vereel.com](https://www.vereel.com) and the hosted MCP
+server at `https://www.vereel.com/api/mcp`. This is a first-party plugin for that
+company's own product: `vereel` is its product name, the repository belongs to it, and
+the plugin is not affiliated with, endorsed by, or a fork of any other project or company
+whose name reads similarly.
+
 ## License
 
 Apache-2.0. See `LICENSE`.

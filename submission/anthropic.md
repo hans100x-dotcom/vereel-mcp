@@ -220,6 +220,48 @@ remote server entry has not been validated locally, and it does not accept `--st
 which the documentation now asks for. The portal validates both, and runs more checks than
 the command does.
 
+### The findings, and what to do about each
+
+The portal validated the `plugin` folder on 2026-11-17 and **passed with warnings**.
+Nothing blocks the submission. Two findings:
+
+**1. Name and publisher checks — passed with warnings.** The report offered to let us
+change `name`, `displayName` or `author.name` so the name "no longer resembles the other
+name", or leave it for the reviewer to decide.
+
+**Leave it. Do not change the name.** `vereel` is the company's own product name; the
+domain, the `author.url`, the `repository` and the hosted server all carry it. Anthropic's
+checklist classes this family of findings — **Name matches a known brand**, **Name may be
+confused with an existing listing**, **Publisher name may be confused with another** — as
+*held for a reviewer*, which is explicitly not a rejection: a person reads the version
+before it goes live. Changing the name to dodge the hold would trade a correct name for a
+wrong one, and `name` is permanent once the plugin is published: every existing install is
+recorded under it, so a later rename loses them.
+
+What was done instead is to make the reviewer's decision quick: the plugin's `README.md`
+now carries a **Who publishes this** section stating that Vereel runs vereel.com and the
+hosted server, that the repository belongs to it, and that the plugin is not affiliated
+with or a fork of any similarly named project. The README is what the reviewer reads, and
+the directory shows it as the listing's description.
+
+One thing to know before publishing: if the name ever does have to change, and the plugin
+is live while the organization is not Verified, email `directory@anthropic.com` first
+rather than pushing the change.
+
+**2. Unrecognized manifest fields.** The report asked us to check each unexpected field's
+spelling against the plugins reference, remove it, or keep it if the directory alone reads
+it — and said of `icon` that the directory reads it and Claude Code ignores it, with no
+action needed.
+
+**No action.** Every key in `.claude-plugin/plugin.json` was checked against the manifest
+reference's field table: `name`, `displayName`, `version`, `description`, `author`,
+`homepage`, `repository`, `license`, `keywords` are recognized fields, and `icon`,
+`documentationUrl`, `supportUrl`, `privacyPolicyUrl` and `termsOfServiceUrl` are the five
+**directory listing fields** the reference names, spelled exactly as it spells them. An
+unrecognized top-level key would only be stripped at load time anyway, never an error.
+This warning is the older local CLI's complaint restated, and the answer is the same:
+keep the keys.
+
 ### The steps after Source
 
 - **Listing details** — read from `plugin.json` and the README, not typed in. To change
