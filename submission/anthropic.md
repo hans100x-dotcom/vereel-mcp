@@ -266,15 +266,60 @@ keep the keys.
 
 - **Listing details** — read from `plugin.json` and the README, not typed in. To change
   anything there, edit the repository and validate again.
-- **Data handling** — four questions: whether the plugin reads or stores personal data,
-  whether it sends data anywhere other than its declared connectors, how long data is
-  kept, and whether it is intended for people under 18. For this plugin: it reads the
-  brand's or creator's own Vereel data through the declared connector only, sends nothing
-  anywhere else, keeps nothing of its own, and is not for under-18s.
+- **Data handling** — four questions. The answers are below, under
+  [Data handling answers](#data-handling-answers).
 - **Compliance** — the contact email and four acknowledgements.
 - **Review and submit** — confirm, choose how new versions arrive (**GitHub push
   webhook** is the default and needs repository admin access to set up), then **Submit for
   review**. The **Auto-publish passing versions** toggle lives here.
+
+### Data handling answers
+
+Checked against Vereel's own privacy policy, not assumed: the section numbers below are
+its, at <https://www.vereel.com/en/privacy>.
+
+**Does the plugin read or store personal data? Reads, stores none.**
+
+> The plugin reads personal data through its one declared connector and stores none of
+> its own. For a signed-in brand it reads that brand's own campaigns — name, description,
+> deliverables, platforms, category, compensation, follower minimum, apply-by date,
+> photos, status and Vereel's reviewer note. For a signed-in creator it reads their
+> portfolio: the headline, the about text, the niches, and the figures Vereel reads from
+> their connected platforms. With no sign-in it reads only public campaign data, exactly
+> what an anonymous visitor of vereel.com sees, with no payment amounts. It writes a
+> campaign in review, photos on it, and the creator's portfolio draft, into that person's
+> own Vereel account. The plugin itself is five  files and one 
+> naming a single URL: no hooks, no scripts, no , no , no local state,
+> nothing it keeps.
+
+**Does it send data to services other than its declared connectors? No.**
+
+> One destination over HTTPS: , the declared connector.
+> The plugin sends nothing anywhere else and carries no analytics or telemetry of its
+> own. Vereel the service processes that data with subprocessors under data processing
+> agreements — Supabase, Vercel, Stripe, Resend, Sentry, PostHog, Google, Cloudflare and
+> Upstash — listed in section 11 of its privacy policy. Vereel does not sell personal
+> data.
+
+**How long does it keep data? The plugin keeps nothing.**
+
+> What the connection writes lives in the person's own Vereel account under Vereel's
+> retention rules, set out in section 14 of its privacy policy: account and profile data
+> while the account exists, then erased or anonymised on deletion. The OAuth token is
+> held by the Claude client, not by the plugin, and the connection can be revoked at any
+> time under Connected apps in Vereel settings.
+
+**Is it intended for people under 18? No — with one thing not to hide.**
+
+Vereel's privacy policy, section 21, says the platform "is intended for people aged **16
+or over**", not 18. The answer to the portal's question is still no, because the question
+asks who the plugin is *for*, and whoever installs it holds a Claude account. Where the
+form allows free text, say so rather than leaving it out:
+
+> Not directed at or designed for children. It is a tool for brands and creators running
+> marketing campaigns. Vereel's own minimum age is 16, stated in section 21 of its
+> privacy policy, so a 16- or 17-year-old creator may hold a Vereel account; the plugin
+> is not aimed at them and adds nothing for them.
 
 A passing version is **not live until it is published**: by default you select **Publish**
 and an Anthropic reviewer publishes it.
