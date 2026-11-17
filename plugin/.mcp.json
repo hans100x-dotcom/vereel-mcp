@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vereel": {
+      "type": "http",
+      "url": "https://www.vereel.com/api/mcp"
+    }
+  }
+}

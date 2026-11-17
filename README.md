@@ -13,14 +13,14 @@ You:     Add a campaign to Vereel: we're launching a vitamin C serum. We want on
 
 Claude:  I'll check Vereel's categories first… Here is the offer I'm about to send. Shall I go ahead?
 You:     Yes.
-Claude:  Done. "Spring skincare launch" is waiting for Vereel's review; it goes public once it is approved.
+Claude:  Done. "Spring skincare launch" is in your Vereel account, waiting for you to publish it.
 ```
 
 ## What you can do
 
 | Tool | What it does | Needs a brand token |
 |---|---|---|
-| `vereel_create_offer` | Add an offer to Vereel. It waits for review before it goes public. | yes (read and write) |
+| `vereel_create_offer` | Add an offer to Vereel. You publish it yourself in Vereel. | yes (read and write) |
 | `vereel_add_offer_image` | Add a photo to an offer: from a link, or from a file on your computer. | yes (read and write) |
 | `vereel_update_offer` | Change an offer while it is still in review. | yes (read and write) |
 | `vereel_list_my_offers` | List your offers and where each one stands (in review, public, rejected). | yes |
@@ -33,7 +33,7 @@ Searching public offers needs no account and no token. Everything else acts for 
 
 ## What happens to an offer
 
-Every offer sent through this server **waits for a Vereel admin to approve it** before creators can see it. It needs at least one photo to be approved. While it waits you can still change it and add photos. If Vereel rejects it, the offer goes back to your drafts with the reason, and `vereel_get_my_offer` shows the note.
+Every offer sent through this server arrives in your Vereel account **in review, and never public on its own**. You publish it yourself at vereel.com, under Campaigns, where you see a preview of the campaign as creators will see it and accept the Cooperation Terms for it. Until you do, you can still change it and add photos from here. Vereel may refuse to publish an offer that has no photo, and an offer without one draws far less interest anyway, so add at least one. If Vereel returns the offer to you, the reason comes with it and `vereel_get_my_offer` shows the note.
 
 The API cannot publish, delete, pay or start a cooperation: those stay in Vereel, in your hands.
 
@@ -123,7 +123,7 @@ Vereel can switch its API off at any time; the tools then answer `API_DISABLED` 
 You are giving an AI assistant a key to your brand's account, so the safeguards come in several layers.
 
 - **A token can only do a little.** It can create and edit offers that wait for review, add photos, and read. It cannot publish, delete, pay, see other brands' offers or create tokens. Tokens expire (30, 90 or 365 days), can be revoked in Settings, and show when they were last used. Vereel stores only a hash of them.
-- **Nothing goes public unannounced.** A Vereel admin approves every offer, and can switch the whole API off.
+- **Nothing goes public unannounced.** No offer sent through the API is public until you publish it yourself in Vereel, having seen it and accepted the Cooperation Terms for it. Vereel can also switch the whole API off.
 - **Offer text is treated as data.** Descriptions on public offers are written by other people. Every result that carries such text starts with a notice telling the assistant not to follow instructions found inside it.
 - **Photos are checked on your machine first.** A file is read and sent only if its *content* is a JPEG, PNG or WebP of at most 5 MB, whatever its name. Nothing else leaves your computer, even if an assistant is tricked into asking. `VEREEL_IMAGE_DIRS` limits the folders as well.
 - **The token goes to Vereel and nowhere else.** It is sent only as a header, only to `VEREEL_API_URL`, never on anonymous requests, never to the photo upload address, and redirects are refused. It is never written to logs or shown in results.
