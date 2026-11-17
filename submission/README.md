@@ -41,32 +41,39 @@ Checked against production on 2026-11-17, not assumed:
 Nothing in this folder can be submitted without these. They are listed again, with
 detail, in the two platform files.
 
-**Needs a change in the `vereel` application, not in this repository:**
+**Needs one value from the OpenAI portal, and nothing else in the `vereel`
+application:**
 
-1. **OpenID Connect, for OpenAI only.** OpenAI requires the OAuth server to expose a
-   UserInfo endpoint returning the `email` claim and `email_verified: true`, and to
-   advertise and enable the `openid` and `email` scopes. Vereel advertises
-   `offers:read` and `offers:write` only, has no `userinfo_endpoint` in its metadata, and
-   answers `404` at `/.well-known/openid-configuration`. **The ChatGPT submission cannot
-   pass review until this exists.** Anthropic does not ask for it.
-2. **The OpenAI domain-verification file.** OpenAI's portal issues a token that must be
-   served as plain text at `https://www.vereel.com/.well-known/openai-apps-challenge`.
-   That path answers `404` today. The token only exists once a person opens the portal,
-   so this is a two-step job: get the token, then add the route.
+1. **The OpenAI domain-verification token.** The portal mints a token that must be served
+   as plain text at `https://www.vereel.com/.well-known/openai-apps-challenge`. The route
+   exists (`vereel` issue #1684): it serves the `OPENAI_APPS_CHALLENGE` environment
+   variable verbatim and answers `404` while it is unset. So this is **one Vercel
+   variable on production plus a redeploy**, once a person has opened the portal and
+   taken the token. `domain_verification_required` is the only blocking domain-related
+   error code OpenAI documents.
+
+**No longer on this list: OpenID Connect.** An earlier version said the ChatGPT
+submission could not pass review without a UserInfo endpoint and the `openid`/`email`
+scopes. That was wrong. Those belong to OpenAI's **workspace domain restrictions**, an
+enterprise feature; neither the remote-MCP review requirements nor the submission error
+list mentions them. It is a decision about serving enterprise workspaces, not a blocker
+— and the scopes must not be advertised before the endpoint answers, because ChatGPT
+requests every advertised scope and fails when the server does not grant them all back.
+See [`openai.md`](openai.md).
 
 **Needs a person, and cannot be prepared here:**
 
-3. A Claude account on a paid plan, with the GitHub account connected in the same Claude
+2. A Claude account on a paid plan, with the GitHub account connected in the same Claude
    organization and able to push to this repository.
-4. An OpenAI organization with individual or business identity verification, and
+3. An OpenAI organization with individual or business identity verification, and
    **Apps Management** write access.
-5. The listing **category** for each directory, chosen from the list each portal shows.
+4. The listing **category** for each directory, chosen from the list each portal shows.
    Neither list is public, so no value is filled in here.
-6. A **demo recording** reachable by a reviewer, which OpenAI requires for MCP review.
-7. A **reviewer test account**: a seeded brand account that is not a real customer's, and
+5. A **demo recording** reachable by a reviewer, which OpenAI requires for MCP review.
+6. A **reviewer test account**: a seeded brand account that is not a real customer's, and
    that signs in with a password — OpenAI's reviewers cannot use multi-factor approval,
    email or SMS codes, or magic links.
-8. The **slug** for the Anthropic listing, which is permanent once published. `vereel` is
+7. The **slug** for the Anthropic listing, which is permanent once published. `vereel` is
    proposed.
 
 ## One stale claim worth fixing first

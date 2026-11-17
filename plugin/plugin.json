@@ -45,6 +45,7 @@
           "Which influencer campaigns are open right now on Vereel for travel creators on TikTok?"
         ],
         "brandColor": "#007B80",
+        "composerIcon": "./assets/icon.png",
         "logo": "./assets/icon.png"
       }
     }
