@@ -153,11 +153,13 @@ describe("a brand's own offers", () => {
     expect(textOf(res)).toContain(UNTRUSTED_NOTICE);
   });
 
-  it("says the offer is waiting for review when nothing is missing", async () => {
+  it("says the brand publishes it itself when nothing is missing", async () => {
     const t = await start([json(201, savedOffer())]);
     const res = await t.call(TOOL_NAMES.createOffer, { ...newOffer, imageUrls: ["https://cdn.example.com/a.jpg"] });
     expect(JSON.parse(t.calls[0]!.body as string).imageUrls).toEqual(["https://cdn.example.com/a.jpg"]);
-    expect(textOf(res)).toContain("waiting for Vereel's review");
+    // in_review means written and not public: it waits for the brand, not for Vereel
+    // (brand-publishes-api-offers, vereel #1629).
+    expect(textOf(res)).toContain("The brand publishes it itself");
   });
 
   it("reports what Vereel refused, field by field", async () => {

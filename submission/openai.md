@@ -62,7 +62,7 @@ The ZIP is the [`plugin/`](../plugin/) folder. Its OpenAI-facing files:
 |---|---|
 | `plugin.json` | The portable manifest, with the listing under `extensions.com.openai.interface` |
 | `mcp.json` | The remote server, with auth under `extensions.com.openai.auth` |
-| `skills/<name>/SKILL.md` | Five skills, shared with the Claude plugin |
+| `skills/<name>/SKILL.md` | Six skills, shared with the Claude plugin |
 | `assets/icon.png` | 512×512 PNG, 25 KB — square and well over the 48×48 minimum |
 
 `mcp.json` declares one server:
@@ -124,8 +124,8 @@ Already in `plugin.json` under `extensions.com.openai.interface`, with OpenAI's 
 | `supportURL` | `https://www.vereel.com/en/contact` | 1024, HTTPS |
 | `privacyPolicyURL` | `https://www.vereel.com/en/privacy` | 1024, HTTPS |
 | `termsOfServiceURL` | `https://www.vereel.com/en/terms` | 1024, HTTPS |
-| `capabilities` | seven entries | 20 items, 120 characters each |
-| `defaultPrompt` | three prompts | 3 prompts, 128 characters each |
+| `capabilities` | nine entries | 20 items, 120 characters each |
+| `defaultPrompt` | three prompts: add a campaign, read the applicants, search without an account | 3 prompts, 128 characters each |
 | `brandColor` | `#007B80` | needs 2:1 against white; this is 5.07:1 |
 | `logo` | `./assets/icon.png` | PNG/JPEG/WebP/SVG, ≤5 MiB, square, ≥48×48 |
 

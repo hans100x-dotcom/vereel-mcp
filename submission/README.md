@@ -76,12 +76,19 @@ See [`openai.md`](openai.md).
 7. The **slug** for the Anthropic listing, which is permanent once published. `vereel` is
    proposed.
 
-## One stale claim worth fixing first
+## The stale claim that is left, and where it lives
 
-The hosted server still tells models that a campaign "needs at least one photo before it
-can be published", and this repository's root `README.md` says a campaign "goes public
-once it is approved". Neither is true any more: the brand publishes its own campaign, and
-the photo requirement was removed. Accurate descriptions are a submission requirement in
-both directories, and a reviewer reads these words. The root README is corrected in the
-same change as these artefacts; the hosted server's tool description is in the `vereel`
-repository and is not.
+Fixed in this repository: the root `README.md` and the local server's own tool
+descriptions no longer say that Vereel reviews an offer and publishes it once approved,
+and no longer claim a photo is needed before it can be published.
+
+**Still wrong, in the `vereel` repository, not this one:** the hosted server tells models
+in `vereel_create_offer` that a campaign "needs at least one photo before it can be
+published", and repeats it in the hint after a save. Checked against `publishBlockers` on
+`main`: publishing calls `wizardErrors` with `requireImage: false`, and the comment above
+it says a photo is deliberately not a gate because a campaign without one merely looks
+plainer, which the brand can see for itself. The apply-by date is the real gate.
+
+Accurate descriptions are a submission requirement in both directories, and a reviewer
+reads these words. This is one sentence in
+`src/vereel/src/lib/public-api/mcp-tools.ts`.

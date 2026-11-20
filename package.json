@@ -1,6 +1,6 @@
 {
   "name": "vereel-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server for Vereel influencer marketing: brands and companies add offers (campaigns) that creators can apply to, and search public offers, from Claude, Cursor and other AI agents.",
   "license": "Apache-2.0",
   "type": "module",

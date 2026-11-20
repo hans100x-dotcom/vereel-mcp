@@ -27,7 +27,7 @@ and the [Software Directory Policy](https://support.claude.com/en/articles/13145
 |---|---|
 | Remote and reachable over HTTPS | Done — `https://www.vereel.com/api/mcp` |
 | Authentication works for Claude's client | Done — OAuth 2.0 with DCR and CIMD advertised |
-| Every tool has a `title` and a `readOnlyHint` or `destructiveHint` | Done — all ten tools |
+| Every tool has a `title` and a `readOnlyHint` or `destructiveHint` | Done — all thirteen tools |
 | Tested in Claude as a custom connector, every tool called | **Not done.** The first attempt, on 2026-11-13, failed before any Vereel page appeared; the cause was an unauthenticated probe answered with a bare `405`, which is fixed and live. The run has not been repeated since. |
 | Listing materials | Prepared below |
 | Account can submit | Needs a person on a paid plan |
@@ -38,9 +38,9 @@ to confirm you have done it. Do that before submitting, not after.
 ### Reads and writes are separate tools
 
 Anthropic rejects a tool that accepts both read-only and write-capable methods. Vereel's
-do not: the three public tools and the three account read tools are annotated
-`readOnlyHint: true`, and creating, changing and adding a photo are separate tools with
-`readOnlyHint: false`.
+do not: the three public tools and the five account read tools are annotated
+`readOnlyHint: true`, and creating, changing, adding a photo and labelling an applicant
+are separate tools with `readOnlyHint: false`.
 
 | Tool | Annotation | Needs sign-in |
 |---|---|---|
@@ -49,10 +49,13 @@ do not: the three public tools and the three account read tools are annotated
 | `vereel_get_offer` | read-only | no |
 | `vereel_list_my_offers` | read-only | yes |
 | `vereel_get_my_offer` | read-only | yes |
+| `vereel_list_applicants` | read-only | yes |
+| `vereel_get_applicant` | read-only | yes |
 | `vereel_get_my_portfolio` | read-only | yes |
 | `vereel_create_offer` | write, not destructive | yes |
 | `vereel_update_offer` | write, destructive | yes |
 | `vereel_add_offer_image` | write, not destructive | yes |
+| `vereel_set_applicant_labels` | write, destructive | yes |
 | `vereel_update_my_portfolio` | write, destructive | yes |
 
 ### Step 3 — Listing
@@ -74,15 +77,19 @@ Add influencer-marketing campaigns to Vereel from a plain-language brief, and se
 ```
 Vereel is an influencer-marketing marketplace. Brands publish campaigns, and creators on Instagram, TikTok, YouTube and X apply to them.
 
-Describe a campaign in plain language and this connector writes it into your Vereel account: the name and description, how many Reels, posts, carousels or Stories the creator publishes, which platforms it runs on, the category, the compensation in money or goods, the follower minimum, how long creators may apply, and up to six photos. Categories come from Vereel's own list, so a campaign lands where the creators who would apply are looking.
+Describe a campaign in plain words and the connector writes it into your Vereel account: the name and description, what the creator publishes, the platforms, the category, the compensation in money or goods, the follower minimum, how long creators may apply, and up to six photos. Categories come from Vereel's own list, so a campaign lands where the creators who would apply are looking.
 
-Nothing goes public on its own. A campaign added here arrives in your account in review, and you publish it yourself at vereel.com, where you see a preview of the campaign as creators will see it and accept the Cooperation Terms for it. The connector cannot publish, delete, pay, or accept an application. While a campaign is still in review you can change its fields and photos from the conversation, and read Vereel's note if it was returned to you.
+Nothing goes public on its own. A campaign added here arrives in your account in review, and you publish it yourself at vereel.com, after a preview and the Cooperation Terms. While it is in review you can change its fields and photos from the conversation.
 
-You can also search the campaigns that are already public without an account at all, by words, category, campaign type, platform and language. Payment amounts are not shown there, exactly as they are not shown to an anonymous visitor of the site.
+When creators apply, it reads the applicants on your own campaign with what your campaign page shows: their account's figures, the match indicator and its signals, their caption topics and evidenced brand partnerships, their application message and, one at a time, their recent posts and audience. It can put a judgement forward on each application as a label - proposed, hold or decline - with the reasoning behind it. A label decides nothing and tells the creator nothing: you read the labels on your campaign page and accept or reject the groups yourself. No creator's contact, tax or payout details are carried.
 
-Creators who sign in can read their Vereel portfolio and rewrite the draft of its three texts — the headline, the about text and the niches. Follower counts and the other figures on a portfolio are read by Vereel from the connected platforms and cannot be set here, and publishing the portfolio stays with the creator.
+It cannot publish, delete, pay, accept or reject anyone, or message a creator.
 
-Signing in happens on vereel.com. You choose whether the connection may only read your campaigns or also create them; creating also asks you to accept the Cooperation Terms. Disconnect it at any time under Connected apps in your Vereel settings.
+You can also search the already public campaigns with no account, by words, category, type, platform and language. Payment amounts are not shown there, as they are not to any anonymous visitor.
+
+Creators who sign in can rewrite their portfolio's draft texts; the figures come from the connected platforms, and publishing stays with them.
+
+Signing in happens on vereel.com, where you choose whether the connection may only read or also write. Disconnect it any time under Connected apps.
 ```
 
 **Categories** (one to five, from the portal's own list) — **a person chooses.** The list
@@ -99,8 +106,9 @@ is not public. Marketing, sales, or productivity are the likely fits.
 ### Step 4 — Use cases
 
 **Primary use cases.** A brand adds an influencer-marketing campaign to Vereel from a
-brief and checks where its campaigns stand. Anyone searches the campaigns that are
-already public.
+brief, checks where its campaigns stand, and works through the creators who applied to
+one of them, labelling each for the brand's own decision. Anyone searches the campaigns
+that are already public.
 
 **What users need before they can connect.** A Vereel account as a brand, for anything
 touching their own campaigns; the free plan is enough. Searching public campaigns needs
@@ -285,10 +293,16 @@ its, at <https://www.vereel.com/en/privacy>.
 > deliverables, platforms, category, compensation, follower minimum, apply-by date,
 > photos, status and Vereel's reviewer note. For a signed-in creator it reads their
 > portfolio: the headline, the about text, the niches, and the figures Vereel reads from
-> their connected platforms. With no sign-in it reads only public campaign data, exactly
+> their connected platforms. For a brand's own campaign it also reads the creators who
+> applied to it, with what the brand's campaign page already shows: the figures of their
+> account, the match indicator, their caption topics and evidenced brand partnerships,
+> their application message and, one applicant at a time, their recent public posts and
+> the shares of their audience by gender, age group and city. It carries no creator's
+> address, email, telephone number, tax or payout detail, and nothing about their
+> cooperations with other brands. With no sign-in it reads only public campaign data, exactly
 > what an anonymous visitor of vereel.com sees, with no payment amounts. It writes a
-> campaign in review, photos on it, and the creator's portfolio draft, into that person's
-> own Vereel account. The plugin itself is five `SKILL.md` files and one `.mcp.json`
+> campaign in review, photos on it, a triage label with its brand-internal note on an
+> application, and the creator's portfolio draft, into that person's own Vereel account. The plugin itself is five `SKILL.md` files and one `.mcp.json`
 > naming a single URL: no hooks, no scripts, no `bin/`, no `userConfig`, no local state,
 > nothing it keeps.
 

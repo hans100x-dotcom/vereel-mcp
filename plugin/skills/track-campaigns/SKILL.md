@@ -10,7 +10,7 @@ connected assistant, newest first, each with its status:
 
 | Status | What it means for the brand |
 |---|---|
-| `in_review` | Waiting for Vereel. Still editable from here. |
+| `in_review` | Written, not public. Waiting for the brand to publish it. Still editable from here. |
 | `active` | Public on Vereel. Creators can apply. Not editable from here. |
 | `rejected` | Returned with a note. Read the note out. |
 | `closed` | No longer taking applications. |
