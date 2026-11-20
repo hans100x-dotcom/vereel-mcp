@@ -8,6 +8,7 @@ person only has to open the portal, paste, and answer the questions that need a 
 | [`anthropic.md`](anthropic.md) | The MCP connector listing and the plugin submission, step by step |
 | [`openai.md`](openai.md) | The ChatGPT/Codex plugin package and listing |
 | [`test-cases.md`](test-cases.md) | The five positive and three negative test cases OpenAI requires |
+| [`reviewer-instructions.md`](reviewer-instructions.md) | The walkthrough pasted into OpenAI's **Review details**, and the script for the demo recording |
 
 The plugin itself is [`../plugin/`](../plugin/). It is one folder that both directories
 read: `.claude-plugin/plugin.json` and `.mcp.json` for Anthropic, `plugin.json` and
