@@ -33,7 +33,7 @@ Searching public offers needs no account and no token. Everything else acts for 
 
 ## What happens to an offer
 
-Every offer sent through this server arrives in your Vereel account **in review, and never public on its own**. You publish it yourself at vereel.com, under Campaigns, where you see a preview of the campaign as creators will see it and accept the Cooperation Terms for it. Until you do, you can still change it and add photos from here. Vereel may refuse to publish an offer that has no photo, and an offer without one draws far less interest anyway, so add at least one. If Vereel returns the offer to you, the reason comes with it and `vereel_get_my_offer` shows the note.
+Every offer sent through this server arrives in your Vereel account **in review, and never public on its own**. You publish it yourself at vereel.com, under Campaigns, where you see a preview of the campaign as creators will see it and accept the Cooperation Terms for it. Until you do, you can still change it and add photos from here. A photo is not required to publish, but an offer without one looks plainer to creators and draws far fewer applications, so add at least one. If Vereel returns the offer to you, the reason comes with it and `vereel_get_my_offer` shows the note.
 
 The API cannot publish, delete, pay or start a cooperation: those stay in Vereel, in your hands.
 
@@ -100,7 +100,7 @@ Run `npx -y github:hans100x-dotcom/vereel-mcp` as a stdio server with `VEREEL_AP
 **4. Ask.** For example:
 
 - *"Show me the Vereel categories, then add a campaign for our new running shoes for Instagram and TikTok."*
-- *"Which of my Vereel offers are still waiting for review?"*
+- *"Which of my Vereel offers are written but not published yet?"*
 - *"Search Vereel for travel campaigns on YouTube."*
 
 Leave the token out and the server still searches public offers.

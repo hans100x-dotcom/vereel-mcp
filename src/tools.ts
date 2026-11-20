@@ -53,10 +53,10 @@ const encode = encodeURIComponent;
 
 function nextStepAfterSave(offer: OwnOffer): string {
   if (offer.missing?.includes("photo")) {
-    return "This offer has no photo yet, and Vereel cannot approve it without one. Add one with vereel_add_offer_image, using this offer's id.";
+    return "This offer has no photo yet. A photo is not required to publish it, but a campaign without one looks plainer to creators and draws far fewer applications. Add one with vereel_add_offer_image, using this offer's id.";
   }
   if (offer.status === "in_review") {
-    return "The offer is waiting for Vereel's review and is not public yet. vereel_get_my_offer shows its status; Vereel tells the brand when it decides.";
+    return "The offer is not public yet. The brand publishes it itself at vereel.com, under Campaigns, where it sees a preview and accepts the Cooperation Terms; Vereel can publish it for the brand instead. vereel_get_my_offer shows its status.";
   }
   return "";
 }
@@ -150,7 +150,7 @@ export function registerTools(server: McpServer, client: VereelClient, config: C
     {
       title: "List my offers",
       description:
-        "List the offers the brand that owns the token has created through the API, newest first, with each one's status: in_review (waiting for Vereel), active (public), rejected (with Vereel's note) or closed. Use it to check progress or to find an offer's id. Needs a brand token (read or read-and-write).",
+        "List the offers the brand that owns the token has created through the API, newest first, with each one's status: in_review (written, not public, waiting for the brand to publish it at vereel.com), active (public), rejected (with Vereel's note) or closed. Use it to check progress or to find an offer's id. Needs a brand token (read or read-and-write).",
       schema: z.strictObject(listMyOffersShape),
       annotations: READ,
       needsToken: true,
@@ -166,7 +166,7 @@ export function registerTools(server: McpServer, client: VereelClient, config: C
     {
       title: "Get one of my offers",
       description:
-        "Get one offer the brand created through the API, in full: every field, its status, the photos, what is still missing before Vereel can approve it, and the reviewer's note if it was rejected. Needs a brand token (read or read-and-write).",
+        "Get one offer the brand created through the API, in full: every field, its status, the photos, what is still missing before it can be published, and Vereel's note if it was returned. Needs a brand token (read or read-and-write).",
       schema: z.strictObject(getMyOfferShape),
       annotations: READ,
       needsToken: true,
@@ -183,8 +183,8 @@ export function registerTools(server: McpServer, client: VereelClient, config: C
       title: "Create an offer",
       description:
         "Add an offer (an influencer-marketing campaign) to Vereel for the brand that owns the token, so creators on Instagram, TikTok, YouTube or X can find it and apply. " +
-        "The offer is NOT public yet: Vereel reviews every offer sent through the API and publishes it once approved. It needs at least one photo before it can be approved: pass imageUrls, or add one afterwards with vereel_add_offer_image. " +
-        "Get categoryIds from vereel_list_categories. Show the user the campaign details and get their go-ahead before calling, because this sends the offer to Vereel's reviewers. " +
+        "The offer is NOT public yet: the brand publishes it itself at vereel.com, under Campaigns, where it sees a preview of the campaign and accepts the Cooperation Terms for it. A photo is not required to publish, but a campaign without one draws far fewer applications: pass imageUrls, or add one afterwards with vereel_add_offer_image. " +
+        "Get categoryIds from vereel_list_categories. Show the user the campaign details and get their go-ahead before calling, because the campaign is then theirs to publish under their brand's name. " +
         "Needs a read-and-write brand token.",
       schema: z.strictObject(createOfferShape),
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
